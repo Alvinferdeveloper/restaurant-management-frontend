@@ -40,7 +40,7 @@ export default function Login() {
                 <div className="text-center mt-6">
                     <p className="text-sm text-gray-600">
                         ¿No tienes una cuenta?{' '}
-                        <a href="/registro" className="text-purple-500 hover:text-purple-600 font-semibold">
+                        <a href="/register" className="text-purple-500 hover:text-purple-600 font-semibold">
                             Regístrate aquí
                         </a>
                     </p>
