@@ -7,6 +7,12 @@ import {
 } from "react-router-dom";
 import Login from './pages/login';
 import Register from './pages/register';
+import { ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+
+const client = new ApolloClient({
+    uri: 'https://flyby-router-demo.herokuapp.com/',
+    cache: new InMemoryCache(),
+  });
 
 const router = createBrowserRouter([
   {
@@ -21,6 +27,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <ApolloProvider client={client}>
     <RouterProvider router={router} />
+    </ApolloProvider>
   </StrictMode>,
 )
