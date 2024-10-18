@@ -22,6 +22,8 @@ const GET_TABLES = gql`
         tables {
             id
             name
+            seats
+            table_number
             createdAt
     }
 }
@@ -39,13 +41,12 @@ export default function AdminTables() {
                         <div className="p-4">
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-lg font-semibold text-primary">Mesa {table.table_number}</span>
-                                <span className="text-sm text-muted-foreground">{table.name}</span>
                             </div>
                             <div className="text-sm text-muted-foreground mb-2">
                                 <span className="font-medium">Asientos:</span> {table.seats}
                             </div>
                             <div className="text-xs text-muted-foreground mb-4">
-                                <span className="font-medium">Creada el:</span> {table.createdAt}
+                                <span className="font-medium">Creada el:</span> {new Date(Number(table.createdAt)).toLocaleString().toString()}
                             </div>
                             <div className="flex justify-between">
                                 <Button variant="outline" size="sm" className="flex items-center">
