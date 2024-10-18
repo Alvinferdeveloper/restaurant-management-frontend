@@ -1,9 +1,29 @@
+import { gql, useMutation } from "@apollo/client";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+const LOGIN = gql`
+ mutation LOGIN($email: String!, $password: String!) {
+ login(email: $email, password: $password) {
+  name
+ }
+}
+
+`;
 export default function Login() {
+    const [login, { data, loading, error }] = useMutation(LOGIN);
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if(data?.login)
+            navigate("/register");
+    }, [data])
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
             <div className="bg-white p-8 rounded-xl shadow-2xl w-96 transform transition-all hover:scale-105 duration-300">
                 <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Iniciar Sesión</h2>
-                <form className="space-y-6">
+                <form className="space-y-6" onSubmit={(e)=> {
+                    e.preventDefault();
+                    login({ variables: { email: "albshdksd67@gmail.com", password: "1234"}})
+                }}>
                     <div>
                         <label htmlFor="email" className="text-sm font-medium text-gray-700 block mb-2">
                             Correo Electrónico

@@ -8,9 +8,10 @@ import {
 import Login from './pages/login';
 import Register from './pages/register';
 import { ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+import AdminTables from './pages/admin/tables';
 
 const client = new ApolloClient({
-    uri: 'https://flyby-router-demo.herokuapp.com/',
+    uri: 'http://localhost:3000/',
     cache: new InMemoryCache(),
   });
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register/>
+  },
+  {
+    path: '/tables',
+    element: <AdminTables/>
   }
 ]);
 
