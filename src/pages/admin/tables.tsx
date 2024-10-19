@@ -1,8 +1,8 @@
 import { gql, useMutation } from '@apollo/client'
 import { useQuery } from '@apollo/client'
-import { Edit2, Trash2 } from 'lucide-react'
+import { Edit2, Table, Trash2 } from 'lucide-react'
 import { Button } from '../../components/ui/button'
-import { useState } from 'react'
+import {  useState } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { toast } from 'sonner'
 
 
 interface Table {
@@ -20,8 +21,6 @@ interface Table {
     seats: number,
     table_number: number,
     createdAt: number,
-    x: number,
-    y: number
 }
 interface Data {
     tables: [Table]
@@ -44,6 +43,7 @@ const UPDATE_TABLE = gql`
     mutation UPDATE_TABLE($tableUpdate: TableUpdate) {
         updateTable(tableUpdate: $tableUpdate) {
          name
+         seats
     }
 }
 `
@@ -51,7 +51,7 @@ const UPDATE_TABLE = gql`
 export default function AdminTables() {
     const { data } = useQuery<Data>(GET_TABLES);
     const [editingTable, setEditingTable] = useState<Table | null>(null);
-    const [ addTableMutation ] = useMutation(UPDATE_TABLE, { refetchQueries:[ { query: GET_TABLES}] });
+    const [ addTableMutation ] = useMutation<{ updateTable: Table}>(UPDATE_TABLE, { refetchQueries:[ { query: GET_TABLES}] });
     const [isDialogOpen, setIsDialogOpen] = useState(false)
 
     const handleEdit = (table: Table) => {
@@ -63,7 +63,14 @@ export default function AdminTables() {
         event.preventDefault()
         if (editingTable) {
            addTableMutation({ variables: { tableUpdate: { id:editingTable.id, name: editingTable.name, seats: Number(editingTable.seats)}}});
-           setIsDialogOpen(false)
+           setIsDialogOpen(false);
+           toast("Informacion de la mesa actualizada", {
+            description: `Ahora el nombre de la mesa es: ${ editingTable.name} y asientos: ${editingTable.seats} `,
+            action: {
+              label: "Aceptar",
+              onClick: () => {},
+            },
+          })
         }
     }
 
@@ -75,7 +82,6 @@ export default function AdminTables() {
             })
         }
     }
-
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-6 text-center">Mesas del Restaurante</h1>

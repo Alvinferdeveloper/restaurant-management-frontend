@@ -9,6 +9,7 @@ import Login from './pages/login';
 import Register from './pages/register';
 import { ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 import AdminTables from './pages/admin/tables';
+import { Toaster } from 'sonner';
 
 const client = new ApolloClient({
     uri: 'http://localhost:3000/',
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ApolloProvider client={client}>
     <RouterProvider router={router} />
+    <Toaster />
     </ApolloProvider>
   </StrictMode>,
 )
