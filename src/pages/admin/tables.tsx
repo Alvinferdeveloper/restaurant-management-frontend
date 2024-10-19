@@ -54,18 +54,23 @@ const UPDATE_TABLE = gql`
     }
 }
 `
-
+const DELETE_TABLE = gql`
+    mutation DELETE_TABLE($id: ID) {
+        deleteTable(id:$id)
+  }
+`
 export default function AdminTables() {
     const { data } = useQuery<Data>(GET_TABLES);
     const [editingTable, setEditingTable] = useState<Table | null>(null);
     const [updateTableMutation] = useMutation(UPDATE_TABLE, { refetchQueries: [{ query: GET_TABLES }] });
     const [addTableMutation] = useMutation(ADD_TABLE, { refetchQueries: [{ query: GET_TABLES }] });
+    const [deleteTableMutation] = useMutation(DELETE_TABLE, { refetchQueries: [{ query: GET_TABLES }] });
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [newTable, setNewTable] = useState({
         name: '',
         seats: 0
-      });
+    });
     const handleEdit = (table: Table) => {
         setEditingTable(table);
         setIsDialogOpen(true)
@@ -97,60 +102,67 @@ export default function AdminTables() {
 
     const handleNewTableInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewTable({
-         ...newTable,
-         [event.target.name]: event.target.value
+            ...newTable,
+            [event.target.name]: event.target.value
         })
-      }
-    
-      const handleAddTable = (event: React.FormEvent<HTMLFormElement>) => {
+    }
+
+    const handleAddTable = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        addTableMutation({ variables: {
-            tableInput: { name: newTable.name, seats: Number(newTable.seats)}
-        }})
+        addTableMutation({
+            variables: {
+                tableInput: { name: newTable.name, seats: Number(newTable.seats) }
+            }
+        })
         setIsAddDialogOpen(false);
-        setNewTable({ name: '', seats: 0})
-      }
+        setNewTable({ name: '', seats: 0 })
+    }
+
+    const handleDeleteTable = (id: number) => {
+        console.log(id);
+        deleteTableMutation({ variables: { id: Number(id) }})
+    }
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-6 text-center">Mesas del Restaurante</h1>
             <div className="mb-4 flex justify-end">
                 <Dialog>
                     <DialogTrigger asChild>
-                        <Button className="flex items-center" onClick={()=> setIsAddDialogOpen(true)}>
+                        <Button className="flex items-center" onClick={() => setIsAddDialogOpen(true)}>
                             <PlusCircle className="h-4 w-4 mr-2" />
                             Agregar Mesa
                         </Button>
                     </DialogTrigger>
-                    { isAddDialogOpen && (
+                    {isAddDialogOpen && (
                         <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                            <DialogTitle>Agregar Nueva Mesa</DialogTitle>
-                        </DialogHeader>
-                        <form onSubmit={handleAddTable} className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="new-name">Nombre de la mesa</Label>
-                                <Input
-                                    id="new-name"
-                                    name="name"
-                                    value={newTable.name}
-                                    onChange={handleNewTableInputChange}
-                                    required
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="new-seats">Cantidad de asientos</Label>
-                                <Input
-                                    id="new-seats"
-                                    name="seats"
-                                    type="number"
-                                    value={newTable.seats}
-                                    onChange={handleNewTableInputChange}
-                                    required
-                                />
-                            </div>
-                            <Button type="submit">Agregar Mesa</Button>
-                        </form>
-                    </DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Agregar Nueva Mesa</DialogTitle>
+                            </DialogHeader>
+                            <form onSubmit={handleAddTable} className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="new-name">Nombre de la mesa</Label>
+                                    <Input
+                                        id="new-name"
+                                        name="name"
+                                        value={newTable.name}
+                                        onChange={handleNewTableInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="new-seats">Cantidad de asientos</Label>
+                                    <Input
+                                        id="new-seats"
+                                        name="seats"
+                                        type="number"
+                                        value={newTable.seats}
+                                        onChange={handleNewTableInputChange}
+                                        required
+                                    />
+                                </div>
+                                <Button type="submit">Agregar Mesa</Button>
+                            </form>
+                        </DialogContent>
                     )}
                 </Dialog>
             </div>
@@ -217,7 +229,7 @@ export default function AdminTables() {
                                         )
                                     }
                                 </Dialog>
-                                <Button variant="destructive" size="sm" className="flex items-center">
+                                <Button variant="destructive" size="sm" className="flex items-center" onClick={()=>handleDeleteTable(table.id)}>
                                     <Trash2 className="h-4 w-4 mr-1" />
                                     Eliminar
                                 </Button>
