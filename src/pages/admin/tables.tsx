@@ -93,14 +93,16 @@ export default function AdminTables() {
                                 <span className="font-medium">Creada el:</span> {new Date(Number(table.createdAt)).toLocaleString().toString()}
                             </div>
                             <div className="flex justify-between">
-                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                <Dialog>
                                     <DialogTrigger asChild>
                                         <Button variant="outline" size="sm" className="flex items-center" onClick={() => handleEdit(table)}>
                                             <Edit2 className="h-4 w-4 mr-1" />
                                             Editar
                                         </Button>
                                     </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]">
+                                    {
+                                        isDialogOpen && (
+                                            <DialogContent className="sm:max-w-[425px]">
                                         <DialogHeader>
                                             <DialogTitle>Editar Mesa {table.table_number}</DialogTitle>
                                         </DialogHeader>
@@ -137,6 +139,8 @@ export default function AdminTables() {
                                             <Button type="submit">Guardar cambios</Button>
                                         </form>
                                     </DialogContent>
+                                        )
+                                    }
                                 </Dialog>
                                 <Button variant="destructive" size="sm" className="flex items-center">
                                     <Trash2 className="h-4 w-4 mr-1" />
