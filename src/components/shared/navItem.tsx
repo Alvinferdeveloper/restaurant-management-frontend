@@ -6,19 +6,17 @@ interface NavItemProps {
     icon: React.ElementType
     label: string
     collapsed: boolean
-    selected: string
-    onClick: () => void
+    pathName: string
     badge?: string
     navTo: string,
   }
   
-export default function NavItem({ icon: Icon, label, collapsed, selected, onClick, badge, navTo }: NavItemProps) {
+export default function NavItem({ icon: Icon, label, collapsed, pathName, badge, navTo }: NavItemProps) {
     return (
       <Link to={navTo}>
       <Button 
-        variant={selected === label ? "secondary" : "ghost"} 
-        className={cn("w-full justify-start", collapsed ? "px-2" : "px-4")}
-        onClick={onClick}
+        variant={pathName.includes(label) ? "secondary" : "ghost"} 
+        className={cn("w-full justify-start hover:opacity-8", collapsed ? "px-2" : "px-4")}
       >
         <Icon className={cn("h-4 w-4", collapsed ? "mr-0" : "mr-2")} />
         {!collapsed && <span>{label}</span>}

@@ -11,7 +11,7 @@ import Register from './pages/register';
 import { ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
 import AdminTables from './pages/admin/tables';
 import { Toaster } from 'sonner';
-import AdminLayout from './components/admin/layout';
+import { AdminLayout} from './components/admin/layout';
 
 const client = new ApolloClient({
     uri: 'http://localhost:3000/',
@@ -26,8 +26,10 @@ createRoot(document.getElementById('root')!).render(
     <Router>
       <Routes>
         {/* Envolvemos las rutas con el Layout */}
-        <Route path="/" element={<AdminLayout />}>
-          <Route index element={<AdminTables/>} />
+        <Route path="/Admin" element={<AdminLayout />}>
+          <Route index path='Dashboard' element={<></>} />
+          <Route path='Tables' element={<AdminTables/>} />
+          <Route path='Menu' element={<></>} />
         </Route>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
