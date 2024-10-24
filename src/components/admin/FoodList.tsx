@@ -2,7 +2,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Pencil, Trash2 } from "lucide-react"
-import { useQuery, gql } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
+import { GET_FOODS, DELETE_FOOD } from "@/resolvers/food"
 
 type Food = {
   id: number
@@ -18,24 +19,16 @@ interface Data {
     foods: [Food]
 }
 
-const GET_FOODS = gql`
-    query food {
-        foods {
-            id
-            name
-            ingredients
-            price
-            preparation_time
-            image
-            available
-    }
-}
-
-`
-
 
 export default function FoodList() {
   const { data } = useQuery<Data>(GET_FOODS);
+  const [ deleteFoodMutation ] = useMutation(DELETE_FOOD, { refetchQueries: [ { query: GET_FOODS}]});
+
+  const handleDelete = (id: number) => {
+    deleteFoodMutation({ variables: { id }});
+  }
+
+
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-5">Gestión de Menú</h1>
@@ -71,7 +64,7 @@ export default function FoodList() {
                       <Pencil className="h-4 w-4 mr-2" />
                       Editar
                     </Button>
-                    <Button size="sm" variant="destructive">
+                    <Button size="sm" variant="destructive" onClick={() => handleDelete(food.id)}>
                       <Trash2 className="h-4 w-4 mr-2" />
                       Eliminar
                     </Button>

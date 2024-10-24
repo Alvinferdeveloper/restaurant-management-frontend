@@ -11,7 +11,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import supabase from "@/lib/supabase";
-import { gql, useMutation } from "@apollo/client";
+import {  useMutation } from "@apollo/client";
+import { ADD_FOOD, GET_FOODS } from "@/resolvers/food";
+import Spinner from "../shared/spiner";
 
 const GET_URL = `
     mutation FILE($filename: String!){
@@ -20,13 +22,6 @@ const GET_URL = `
       token
     }
  }
-`
-const ADD_FOOD = gql`
-  mutation Food($foodInput: FoodInput){
-  addFood(foodInput: $foodInput) {
-    name
-  }
-}
 `
 
 const fetchSignedUrl = async (imageName: string) => {
@@ -48,9 +43,10 @@ const fetchSignedUrl = async (imageName: string) => {
 }
 export default function FoodForm() {
   const [imagen, setImagen] = useState<File | null>();
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [ loading, setLoading] = useState(false);
   const [imagenPreview, setImagenPreview] = useState<string | null>(null);
-  const [ addFoodMutation] = useMutation(ADD_FOOD);
+  const [ addFoodMutation] = useMutation(ADD_FOOD, { refetchQueries: [ { query: GET_FOODS}]});
   const [formData, setFormData] = useState({
     name: '',
     ingredients: '',
@@ -72,19 +68,20 @@ export default function FoodForm() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Aquí puedes agregar la lógica para enviar los datos y la imagen a tu backend
     if (!imagen) {
       alert("Seleccione una imagen");
       return;
     }
+    setLoading(true);
     const newImageName = imagen.name.concat(Date.now().toString());
     const { token } = await fetchSignedUrl(newImageName);
     const { data, error } = await supabase.storage.from('food').uploadToSignedUrl(`image/${newImageName}`, token, imagen);
     if (!error) {
       addFoodMutation({ variables: { foodInput: { ...formData, price: Number(formData.price), preparation_time:Number(formData.preparation_time), image: data?.path }}});
     }
-    
+    setLoading(false)
     setOpen(false)
     setFormData({ name: '', ingredients: '', price: 0, preparation_time: 0 })
     setImagen(null)
@@ -179,6 +176,11 @@ export default function FoodForm() {
             )}
           </div>
           <Button type="submit" className="w-full">Guardar Comida</Button>
+          {
+            loading && (
+              <Spinner/>
+            )
+          }
         </form>
       </DialogContent>
     </Dialog>
