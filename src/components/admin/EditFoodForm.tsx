@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { useMutation } from '@apollo/client'
-import { GET_FOODS, UPDATE_FOOD } from '@/resolvers/food'
+import { GET_FOODS, UPDATE_FOOD } from '@/resolvers/admin/food'
 
 type Food = {
     id: number

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Pencil, Trash2 } from "lucide-react"
 import { useQuery, useMutation } from '@apollo/client'
-import { GET_FOODS, DELETE_FOOD, TOOGLE_STATUS } from "@/resolvers/food"
+import { GET_FOODS, DELETE_FOOD, TOOGLE_STATUS } from "@/resolvers/admin/food"
 import { Dialog} from '@/components/ui/dialog'
 import { useState } from "react"
 import EditFoodForm from "./EditFoodForm"

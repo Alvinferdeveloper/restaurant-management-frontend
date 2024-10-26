@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import supabase from "@/lib/supabase";
 import {  useMutation } from "@apollo/client";
-import { ADD_FOOD, GET_FOODS } from "@/resolvers/food";
+import { ADD_FOOD, GET_FOODS } from "@/resolvers/admin/food";
 import Spinner from "../shared/spiner";
 
 const GET_URL = `
