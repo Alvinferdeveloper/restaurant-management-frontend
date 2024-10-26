@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog,DialogTrigger } from "@/components/ui/dialog"
 import { Square, Menu } from "lucide-react"
 import { useQuery } from '@apollo/client'
 import { GET_TABLES } from '@/resolvers/user/table'
+import UserFoods from './foods'
 
 type Table = {
     id: number
@@ -61,29 +62,7 @@ export default function UserTables() {
                             )
                         }
 
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Menú del Restaurante</DialogTitle>
-                            </DialogHeader>
-                            <div className="grid gap-4">
-                                <div className="grid grid-cols-2 items-center gap-4">
-                                    <span className="font-medium">Paella Valenciana</span>
-                                    <span className="text-right">€18.99</span>
-                                </div>
-                                <div className="grid grid-cols-2 items-center gap-4">
-                                    <span className="font-medium">Gazpacho</span>
-                                    <span className="text-right">€8.99</span>
-                                </div>
-                                <div className="grid grid-cols-2 items-center gap-4">
-                                    <span className="font-medium">Tortilla Española</span>
-                                    <span className="text-right">€10.99</span>
-                                </div>
-                                <div className="grid grid-cols-2 items-center gap-4">
-                                    <span className="font-medium">Pulpo a la Gallega</span>
-                                    <span className="text-right">€22.99</span>
-                                </div>
-                            </div>
-                        </DialogContent>
+                            <UserFoods/>
                     </Dialog>
                 </div>
             </div>
