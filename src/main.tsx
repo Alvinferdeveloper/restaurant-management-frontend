@@ -16,7 +16,7 @@ import Foods from './pages/admin/foods';
 
 const client = new ApolloClient({
     uri: 'http://localhost:3000/',
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({ addTypename:false}),
   });
 
 

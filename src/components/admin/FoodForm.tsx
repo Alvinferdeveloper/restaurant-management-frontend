@@ -135,6 +135,7 @@ export default function FoodForm() {
               name="price"
               type="number"
               value={formData.price}
+              min={0}
               onChange={handleInputChange}
               required
             />
@@ -146,6 +147,7 @@ export default function FoodForm() {
               name="preparation_time"
               type="number"
               value={formData.preparation_time}
+              min={0}
               onChange={handleInputChange}
               required
             />

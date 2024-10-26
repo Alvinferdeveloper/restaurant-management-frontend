@@ -26,3 +26,17 @@ export const ADD_FOOD = gql`
   }
 }
 `
+export const TOOGLE_STATUS = gql`
+    mutation TOOGLE_STATUS($id: ID){
+        toogleStatus(id: $id){
+            name
+        }
+    }
+`
+export const UPDATE_FOOD = gql`
+    mutation UPDATE_FOOD($foodUpdate: FoodUpdate){
+        updateFood(foodUpdate: $foodUpdate){
+            name
+        }
+    }
+`
