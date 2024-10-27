@@ -14,6 +14,7 @@ import { Toaster } from 'sonner';
 import { AdminLayout} from './components/admin/layout';
 import Foods from './pages/admin/foods';
 import UserTablesPage from './pages/user/tables';
+import NewOrder from './pages/user/order';
 
 const client = new ApolloClient({
     uri: 'http://localhost:3000/',
@@ -36,6 +37,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/User" element={<AdminLayout />}>
           <Route index path='Dashboard' element={<></>} />
           <Route path='Tables' element={<UserTablesPage/>} />
+          <Route path='NewOrder' element={<NewOrder/>} />
         </Route>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>

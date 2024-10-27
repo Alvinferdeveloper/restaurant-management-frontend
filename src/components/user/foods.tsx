@@ -1,5 +1,3 @@
-'use client'
-
 import { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { GET_FOODS } from '@/resolvers/user/food'
@@ -41,12 +39,22 @@ export default function MenuDialog() {
     const totalPrice = data?.foods.reduce((sum, food) => sum + food.price * (quantities[food.id] || 0), 0);
 
     const addFood = (food: Food) => {
-        setOrderFoods(prev => prev ? [...prev, food] : [food])
+        setOrderFoods((prev = []) => {
+            const foodIndex = prev.findIndex(fd => fd.id === food.id);
+
+            if (foodIndex > -1) {
+                const updatedFoods = [...prev];
+                updatedFoods[foodIndex] = food;
+                return updatedFoods;
+            }
+            return [...prev, food];
+        });
     }
 
     const removeFood = (food: Food) => {
         setOrderFoods(prev => prev?.filter(fd => fd.id != food.id))
     }
+
     return (
         <DialogContent className="max-w-[90vw] max-h-[90vh] w-full">
             <DialogHeader>
@@ -88,7 +96,7 @@ export default function MenuDialog() {
                                         size="icon"
                                         onClick={() => {
                                             updateQuantity(food.id, -1);
-                                            addFood(food);
+                                            removeFood(food);
                                         }}
                                         disabled={!quantities[food.id]}
                                     >
@@ -100,7 +108,7 @@ export default function MenuDialog() {
                                         size="icon"
                                         onClick={() => {
                                             updateQuantity(food.id, 1);
-                                            removeFood(food)
+                                            addFood(food)
                                         }}
                                     >
                                         <Plus className="h-4 w-4" />
@@ -118,7 +126,10 @@ export default function MenuDialog() {
                         <span className="text-xl font-bold">Total del Pedido:</span>
                     </div>
                     <span className="text-2xl font-bold">{totalPrice?.toFixed(2)} €</span>
-                    <Button className="bg-black hover:bg-primary/90" onClick={() => navigate('/User/NewOrder', { state: orderFoods })}>
+                    <Button className="bg-black hover:bg-primary/90" onClick={() => {
+                        const foodCart = orderFoods?.map(food => ({ ...food, amount: quantities[food.id], total: quantities[food.id] * food.price }));
+                        navigate('/User/NewOrder', { state: { foodCart, totalPrice } })
+                    }}>
 
                         Confirmar
                     </Button>
