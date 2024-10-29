@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 const LOGIN = gql`
  mutation LOGIN($email: String!, $password: String!) {
@@ -10,7 +10,7 @@ const LOGIN = gql`
 
 `;
 export default function Login() {
-    const [login, { data, loading, error }] = useMutation(LOGIN);
+    const [login ] = useMutation(LOGIN);
     const [ email, setEmail ] = useState('');
     const [ badCredentials, setBadCredentials ] = useState(false);
     const [ password, setPassword ] = useState('');

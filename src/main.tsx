@@ -19,6 +19,7 @@ import NewOrder from './pages/user/order';
 const client = new ApolloClient({
     uri: 'http://localhost:3000/',
     cache: new InMemoryCache({ addTypename:false}),
+    credentials: 'include'
   });
 
 
