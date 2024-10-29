@@ -8,18 +8,32 @@ import {
 } from "react-router-dom";
 import Login from './pages/login';
 import Register from './pages/register';
-import { ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, from} from '@apollo/client';
 import AdminTables from './pages/admin/tables';
 import { Toaster } from 'sonner';
 import { AdminLayout} from './components/admin/layout';
 import Foods from './pages/admin/foods';
 import UserTablesPage from './pages/user/tables';
 import NewOrder from './pages/user/order';
+import { onError } from "@apollo/client/link/error";
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach((err) => {
+      if (err.extensions?.code === "UNAUTHENTICATED" || err.extensions?.code === "FORBIDDEN" ) {
+        // Lógica de manejo para usuarios no autorizados (por ejemplo, redirigir al login)
+        window.location.href = "Login";
+      }
+    });
+  }
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const httpLink = new HttpLink({ uri: 'http://localhost:3000/' , credentials:'include'})
 
 const client = new ApolloClient({
-    uri: 'http://localhost:3000/',
     cache: new InMemoryCache({ addTypename:false}),
-    credentials: 'include'
+    link: from([errorLink, httpLink])
   });
 
 
