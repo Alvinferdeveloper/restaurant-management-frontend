@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
 import Login from './pages/login';
 import Register from './pages/register';
@@ -17,16 +18,18 @@ import UserTablesPage from './pages/user/tables';
 import NewOrder from './pages/user/order';
 import { onError } from "@apollo/client/link/error";
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
+const errorLink = onError(({ graphQLErrors }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach((err) => {
       if (err.extensions?.code === "UNAUTHENTICATED" || err.extensions?.code === "FORBIDDEN" ) {
         // Lógica de manejo para usuarios no autorizados (por ejemplo, redirigir al login)
-        window.location.href = "Login";
+        if(window.location.href == '/User/Tables'){
+            return window.location.href = "/Admin/Tables";
+        }
+        window.location.href = '/Login';
       }
     });
   }
-  if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
 const httpLink = new HttpLink({ uri: 'http://localhost:3000/' , credentials:'include'})
@@ -44,9 +47,10 @@ createRoot(document.getElementById('root')!).render(
     <Router>
       <Routes>
         {/* Envolvemos las rutas con el Layout */}
+        <Route path='/' element = {<Navigate to={'/User/Tables'}/>}/>
         <Route path="/Admin" element={<AdminLayout />}>
-          <Route index path='Dashboard' element={<></>} />
-          <Route path='Tables' element={<AdminTables/>} />
+          <Route path='Dashboard' element={<></>} />
+          <Route index path='Tables' element={<AdminTables/>} />
           <Route path='Menu' element={<Foods/>} />
         </Route>
         <Route path="/User" element={<AdminLayout />}>
