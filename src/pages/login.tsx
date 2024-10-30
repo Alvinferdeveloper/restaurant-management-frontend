@@ -1,3 +1,4 @@
+import Spinner from "@/components/shared/spiner";
 import { gql, useMutation } from "@apollo/client";
 import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +11,7 @@ const LOGIN = gql`
 
 `;
 export default function Login() {
-    const [login ] = useMutation(LOGIN);
+    const [login, { loading} ] = useMutation(LOGIN);
     const [ email, setEmail ] = useState('');
     const [ badCredentials, setBadCredentials ] = useState(false);
     const [ password, setPassword ] = useState('');
@@ -24,7 +25,7 @@ export default function Login() {
                 <form className="space-y-6" onSubmit={async (e)=> {
                     e.preventDefault();
                     const res = await login({ variables: { email, password}});
-                    if(res.data.login)navigate('/Admin/Dashboard');
+                    if(res.data.login)navigate('/User/Tables');
                     setBadCredentials(true)
                 }}>
                     <div>
@@ -66,6 +67,9 @@ export default function Login() {
                     { badCredentials && (
                         <p className=" text-red-600">Credenciales Invalidas</p>
                     )}
+                    {
+                        loading && <Spinner/>
+                    }
                     
                 </form>
                 <div className="text-center mt-6">
