@@ -3,7 +3,7 @@ import {
     Routes,
     Route,
     Navigate,
-  } from "react-router-dom";
+} from "react-router-dom";
 import { AdminLayout } from "../admin/layout";
 import AdminTables from "@/pages/admin/tables";
 import Foods from "@/pages/admin/foods";
@@ -11,23 +11,55 @@ import UserTablesPage from "@/pages/user/tables";
 import NewOrder from "@/pages/user/order";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
+import ProtectedRoute from "./protectedRoute";
+import { useQuery } from "@apollo/client";
+import { GET_USER_AUTH } from "@/resolvers/auth";
+import { useEffect } from "react";
+
+type User = {
+    id: number,
+    name: string,
+    roles: string[]
+}
+
+interface Data {
+    user: User
+}
 
 export default function GlobalRoutes() {
+    const { data, loading } = useQuery<Data>(GET_USER_AUTH);
+    
+    if (loading) return <div>Loading...</div>;
+    let initialPath = '/Login';
+    if (data?.user) {
+        const isAdmin = data.user.roles.includes('ADMIN');
+        initialPath = isAdmin ? '/Admin/Tables' : '/User/Tables';
+
+    }
+
     return (
         <Router>
             <Routes>
-                {/* Envolvemos las rutas con el Layout */}
-                <Route path='/' element={<Navigate to={'/User/Tables'} />} />
+
+                <Route
+                    path="/"
+                    element={<Navigate to={initialPath} />}
+                />
                 <Route path="/Admin" element={<AdminLayout />}>
-                    <Route path='Dashboard' element={<></>} />
-                    <Route index path='Tables' element={<AdminTables />} />
-                    <Route path='Menu' element={<Foods />} />
+                    <Route element={<ProtectedRoute user={data?.user} requiredRoles={['ADMIN']} />}>
+                        <Route path='Tables' element={<AdminTables />} />
+                        <Route path='Dashboard' element={<></>} />
+                        <Route path='Menu' element={<Foods />} />
+                    </Route>
                 </Route>
                 <Route path="/User" element={<AdminLayout />}>
-                    <Route index path='Dashboard' element={<></>} />
-                    <Route path='Tables' element={<UserTablesPage />} />
-                    <Route path='NewOrder' element={<NewOrder />} />
+                    <Route element={<ProtectedRoute user={data?.user} requiredRoles={['USER']} />}>
+                        <Route path='Tables' element={<UserTablesPage />} />
+                        <Route index path='Dashboard' element={<></>} />
+                        <Route path='NewOrder' element={<NewOrder />} />
+                    </Route>
                 </Route>
+
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
             </Routes>

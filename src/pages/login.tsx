@@ -1,23 +1,24 @@
 import Spinner from "@/components/shared/spiner";
+import { GET_USER_AUTH } from "@/resolvers/auth";
 import { gql, useMutation } from "@apollo/client";
 import {  useState } from "react";
-import { useNavigate } from "react-router-dom";
 const LOGIN = gql`
  mutation LOGIN($email: String!, $password: String!) {
  login(email: $email, password: $password) {
   name
+  roles{
+    name
+  }
  }
 }
 
 `;
 export default function Login() {
-    const [login, { loading} ] = useMutation(LOGIN);
+    const [login, { loading} ] = useMutation(LOGIN, { refetchQueries:[{ query: GET_USER_AUTH}]});
     const [ email, setEmail ] = useState('');
     const [ badCredentials, setBadCredentials ] = useState(false);
     const [ password, setPassword ] = useState('');
   
-    const navigate = useNavigate();
-    
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
             <div className="bg-white p-8 rounded-xl shadow-2xl w-96 transform transition-all hover:scale-105 duration-300">
@@ -25,8 +26,11 @@ export default function Login() {
                 <form className="space-y-6" onSubmit={async (e)=> {
                     e.preventDefault();
                     const res = await login({ variables: { email, password}});
-                    if(res.data.login)navigate('/User/Tables');
-                    setBadCredentials(true)
+                    console.log(res.data.login)
+                    if(res.data.login == null)setBadCredentials(true)
+                    const roles = res.data.login.roles.map((role:{ name: string}) => role.name);
+                    const redirectPath = roles.includes("ADMIN") ? '/Admin/Tables' : '/User/Tables';
+                        window.location.href = redirectPath;
                 }}>
                     <div>
                         <label htmlFor="email" className="text-sm font-medium text-gray-700 block mb-2">

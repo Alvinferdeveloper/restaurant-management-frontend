@@ -9,11 +9,7 @@ import GlobalRoutes from './components/shared/routes';
 const errorLink = onError(({ graphQLErrors }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach((err) => {
-      if (err.extensions?.code === "UNAUTHENTICATED" || err.extensions?.code === "FORBIDDEN" ) {
-        // Lógica de manejo para usuarios no autorizados (por ejemplo, redirigir al login)
-        if(window.location.href == '/User/Tables'){
-            return window.location.href = "/Admin/Tables";
-        }
+      if (err.extensions?.code === "FORBIDDEN" ) {
         window.location.href = '/Login';
       }
     });
