@@ -14,6 +14,7 @@ import Register from "@/pages/register";
 import ProtectedRoute from "./protectedRoute";
 import { useQuery } from "@apollo/client";
 import { GET_USER_AUTH } from "@/resolvers/auth";
+import { UserLayout } from "../user/layout";
 
 
 type User = {
@@ -52,7 +53,7 @@ export default function GlobalRoutes() {
                         <Route path='Menu' element={<Foods />} />
                     </Route>
                 </Route>
-                <Route path="/User" element={<AdminLayout />}>
+                <Route path="/User" element={<UserLayout />}>
                     <Route element={<ProtectedRoute user={data?.user} requiredRoles={['USER']} />}>
                         <Route path='Tables' element={<UserTablesPage />} />
                         <Route index path='Dashboard' element={<></>} />
