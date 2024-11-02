@@ -3,7 +3,7 @@ import {
     Sofa,
     UtensilsCrossed,
     ChevronRight,
-    ChevronLeft
+    ChevronLeft,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -11,6 +11,7 @@ import React, {  useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { Outlet, useLocation } from "react-router-dom";
 import NavItem from "../shared/navItem";
+import LogOutItem from "../shared/logOutItem";
 
 const navItems = [
     {
@@ -38,7 +39,7 @@ export const AdminLayout = React.memo(() => {
         return (
             <div className="flex h-screen overflow-hidden">
                 <aside className={cn(
-                    " bg-blue-950 border-r transition-all duration-300 ease-in-out text-white",
+                    " bg-blue-950 border-r transition-all duration-300 ease-in-out text-white relative",
                     collapsed ? "w-16" : "w-64"
                 )}>
                     <div className="flex items-center justify-between p-4">
@@ -64,6 +65,9 @@ export const AdminLayout = React.memo(() => {
 
                                     <hr />
 
+                                </div>
+                                <div className="space-y-1">
+                                    <LogOutItem collapsed={collapsed} />
                                 </div>
                             </div>
                         </div>
