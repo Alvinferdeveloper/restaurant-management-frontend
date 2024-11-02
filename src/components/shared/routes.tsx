@@ -14,7 +14,7 @@ import Register from "@/pages/register";
 import ProtectedRoute from "./protectedRoute";
 import { useQuery } from "@apollo/client";
 import { GET_USER_AUTH } from "@/resolvers/auth";
-import { useEffect } from "react";
+
 
 type User = {
     id: number,

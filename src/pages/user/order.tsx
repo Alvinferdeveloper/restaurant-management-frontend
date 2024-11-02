@@ -1,35 +1,46 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ShoppingCart, Check } from "lucide-react"
+import { Check, ShoppingCart } from "lucide-react"
 import { useLocation } from 'react-router-dom'
+import { useMutation } from '@apollo/client'
+import { ADD_ORDER } from '@/resolvers/user/order'
+import Spinner from '@/components/shared/spiner'
+import { Dialog } from '@/components/ui/dialog'
+import OrderConfirmation from '@/components/user/orderConfirmation'
 
 
 type Food = {
-    id: number
-    name: string
-    price: number
-    ingredients: string
-    preparation_time: number
-    image: string
+  id: number
+  name: string
+  price: number
+  ingredients: string
+  preparation_time: number
+  image: string
 }
 
 interface FoodCart extends Food {
-    amount: number,
-    total: number
+  id: number,
+  amount: number,
+  total: number
 }
 export default function NewOrder() {
   const location = useLocation();
-  const { foodCart, totalPrice } = location.state as { foodCart:  FoodCart[], totalPrice: number} || { foodCart: [], totalPrice:0}; // Ac
-  console.log(location.state)
-  const [orderConfirmed, setOrderConfirmed] = useState(false)
+  const { foodCart, totalPrice } = location.state as { foodCart: FoodCart[], totalPrice: number } || { foodCart: [], totalPrice: 0 };
+  const [addOrderMutation, { loading, error }] = useMutation(ADD_ORDER)
+  const [orderConfirmed, setOrderConfirmed] = useState(false);
+  const [confirmationDialog, setConfirmationDialog] = useState(false);
 
-  
-
+  useEffect(() => { console.log(error?.extraInfo) }, [error])
   const handleConfirmOrder = () => {
-    setOrderConfirmed(true)
-    // Aquí iría la lógica para enviar el pedido al servidor
+    const order = {
+      total: totalPrice,
+      foodOrders: foodCart.map(food => ({ food_id: Number(food.id), amount: food.amount, total: food.total }))
+    }
+    addOrderMutation({ variables: { orderInput: order } });
+    setOrderConfirmed(true);
+    setConfirmationDialog(true)
   }
 
   return (
@@ -67,16 +78,27 @@ export default function NewOrder() {
           </div>
           <span className="text-2xl font-bold">{totalPrice.toFixed(2)} €</span>
         </div>
-        {orderConfirmed ? (
-          <div className="flex items-center text-green-600">
+        <Dialog open={confirmationDialog && !error} onOpenChange={setConfirmationDialog}>
+          <OrderConfirmation />
+        </Dialog>
+
+        {
+          orderConfirmed ? (<div className="flex items-center text-green-600">
             <Check className="mr-2 h-5 w-5" />
             <span>Pedido confirmado</span>
           </div>
-        ) : (
-          <Button onClick={handleConfirmOrder} className="w-full">
-            Confirmar Pedido
-          </Button>
-        )}
+          ) : (
+            <Button onClick={handleConfirmOrder} className="w-full">
+              Confirmar Pedido
+            </Button>
+          )
+        }
+
+        {
+          loading && (
+            <Spinner />
+          )
+        }
       </CardFooter>
     </Card>
   )
