@@ -6,3 +6,12 @@ export const ADD_ORDER = gql`
   }
 }
 `
+export const GET_ORDERS = gql`
+  query GET_ORDERS{
+    orders {
+    total
+    date
+    id
+  }
+  }
+`
