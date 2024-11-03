@@ -15,7 +15,7 @@ export default function ProtectedRoute({ user, requiredRoles }: Props){
     const navigate = useNavigate();
     useEffect(()=> {
         if(!user)
-            navigate('/Login')
+            return navigate('/Login')
         if(!isAuthorized)
             return navigate(-1)
     }, [navigate, isAuthorized, user])
