@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Check, ShoppingCart } from "lucide-react"
 import { useLocation } from 'react-router-dom'
 import { useMutation } from '@apollo/client'
@@ -9,6 +8,7 @@ import { ADD_ORDER } from '@/resolvers/user/order'
 import Spinner from '@/components/shared/spiner'
 import { Dialog } from '@/components/ui/dialog'
 import OrderConfirmation from '@/components/user/orderConfirmation'
+import OrderBill from './orderBill'
 
 
 type Food = {
@@ -49,26 +49,7 @@ export default function NewOrder() {
         <CardTitle className="text-2xl font-bold text-center">Factura</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Plato</TableHead>
-              <TableHead>Cantidad</TableHead>
-              <TableHead>Precio Unitario</TableHead>
-              <TableHead>Total</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {foodCart.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.amount}</TableCell>
-                <TableCell>{item.price.toFixed(2)} €</TableCell>
-                <TableCell>{item.total} €</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <OrderBill foodCart={foodCart}/>
       </CardContent>
       <CardFooter className="flex flex-col items-end gap-4">
         <div className="flex items-center justify-between w-full">

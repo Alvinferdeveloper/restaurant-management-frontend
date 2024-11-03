@@ -8,7 +8,7 @@ import { AdminLayout } from "../admin/layout";
 import AdminTables from "@/pages/admin/tables";
 import Foods from "@/pages/admin/foods";
 import UserTablesPage from "@/pages/user/tables";
-import NewOrder from "@/pages/user/order";
+import NewOrder from "@/pages/user/newOrder";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
 import ProtectedRoute from "./protectedRoute";
