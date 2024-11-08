@@ -88,7 +88,7 @@ export default function MenuDialog() {
                             <CardFooter className="flex justify-between items-center p-4 bg-secondary/10">
                                 <div className="flex items-center">
                                     <Utensils className="mr-2 h-4 w-4" />
-                                    <span className="font-bold">{food.price.toFixed(2)} €</span>
+                                    <span className="font-bold">{food.price} €</span>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <Button

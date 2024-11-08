@@ -15,3 +15,20 @@ export const GET_ORDERS = gql`
   }
   }
 `
+
+export const GET_ORDER = gql`
+  
+query order($orderId: ID!){
+  order(orderId: $orderId) {
+    total
+      food_order {
+        amount
+        food {
+          id
+          name
+          price
+        }
+      }
+    }
+  }
+`

@@ -6,7 +6,7 @@ interface FoodCart {
     amount: number,
     total: number
   }
-export default function OrderBill({foodCart}:{ foodCart: FoodCart[]}){
+export default function OrderBill({foodCart}:{ foodCart: FoodCart[] | undefined}){
     return (
         <Table>
           <TableHeader>
@@ -18,7 +18,7 @@ export default function OrderBill({foodCart}:{ foodCart: FoodCart[]}){
             </TableRow>
           </TableHeader>
           <TableBody>
-            {foodCart.map((item) => (
+            {foodCart?.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.amount}</TableCell>

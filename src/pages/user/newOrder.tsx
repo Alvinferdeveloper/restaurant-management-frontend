@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Check, ShoppingCart } from "lucide-react"
@@ -8,7 +8,7 @@ import { ADD_ORDER } from '@/resolvers/user/order'
 import Spinner from '@/components/shared/spiner'
 import { Dialog } from '@/components/ui/dialog'
 import OrderConfirmation from '@/components/user/orderConfirmation'
-import OrderBill from './orderBill'
+import OrderBill from '../../components/user/orderBill'
 
 
 type Food = {
@@ -31,8 +31,6 @@ export default function NewOrder() {
   const [addOrderMutation, { loading, error }] = useMutation(ADD_ORDER)
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [confirmationDialog, setConfirmationDialog] = useState(false);
-
-  useEffect(() => { console.log(error?.extraInfo) }, [error])
   const handleConfirmOrder = () => {
     const order = {
       total: totalPrice,

@@ -16,6 +16,7 @@ import { useQuery } from "@apollo/client";
 import { GET_USER_AUTH } from "@/resolvers/auth";
 import { UserLayout } from "../user/layout";
 import UserOrders from "@/pages/user/orders";
+import UserOrder from "@/pages/user/order";
 
 
 type User = {
@@ -60,6 +61,7 @@ export default function GlobalRoutes() {
                         <Route index path='Dashboard' element={<></>} />
                         <Route path='NewOrder' element={<NewOrder />} />
                         <Route path='Orders' element={<UserOrders />} />
+                        <Route path='Order/:orderId' element={<UserOrder/>} />
                     </Route>
                 </Route>
 
