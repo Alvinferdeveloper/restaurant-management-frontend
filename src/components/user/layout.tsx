@@ -42,8 +42,8 @@ export const UserLayout = React.memo(() => {
         return (
             <div className="flex h-screen overflow-hidden">
                 <aside className={cn(
-                    " bg-blue-950 border-r transition-all duration-300 ease-in-out text-white",
-                    collapsed ? "w-16" : "w-64"
+                    " bg-blue-950 border-r transition-all sm:static duration-300 ease-in-out text-white",
+                    collapsed ? "w-16" : "w-64 absolute z-10"
                 )}>
                     <div className="flex items-center justify-between p-4">
                         {!collapsed && <h1 className="text-xl font-semibold">Finalytic</h1>}
