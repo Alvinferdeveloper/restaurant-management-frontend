@@ -18,16 +18,19 @@ const navItems = [
         icon: LayoutDashboard,
         label: "Dashboard",
         navTo: "/User/Dashboard",
+        selectedName: "Dashboard",
     },
     {
         icon: Sofa,
         label: "Mesas",
-        navTo: "/User/Tables"
+        navTo: "/User/Tables",
+        selectedName: "Tables",
     },
     {
         icon: UtensilsCrossed,
         label: "Mis Ordenes",
-        navTo: "/User/Orders"
+        navTo: "/User/Orders",
+        selectedName: "Orders",
     },
 
 ]
@@ -59,7 +62,7 @@ export const UserLayout = React.memo(() => {
                                 <div className="space-y-1">
                                     {
                                         navItems.map(item => (
-                                            <NavItem icon={item.icon} label={item.label} collapsed={collapsed} pathName={location.pathname}  navTo={item.navTo} />
+                                            <NavItem icon={item.icon} label={item.label} collapsed={collapsed} pathName={location.pathname}  navTo={item.navTo} selectedName={item.selectedName} />
                                         ))
                                     }
 

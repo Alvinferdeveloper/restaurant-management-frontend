@@ -9,13 +9,14 @@ interface NavItemProps {
     pathName: string
     badge?: string
     navTo: string,
+    selectedName: string
   }
   
-export default function NavItem({ icon: Icon, label, collapsed, pathName, badge, navTo }: NavItemProps) {
+export default function NavItem({ icon: Icon, label, collapsed, pathName, badge, navTo, selectedName }: NavItemProps) {
     return (
       <Link to={navTo}>
       <Button 
-        variant={pathName.includes(label) ? "secondary" : "ghost"} 
+        variant={pathName.includes(selectedName) ? "secondary" : "ghost"} 
         className={cn("w-full justify-start hover:opacity-8", collapsed ? "px-2" : "px-4")}
       >
         <Icon className={cn("h-4 w-4", collapsed ? "mr-0" : "mr-2")} />
