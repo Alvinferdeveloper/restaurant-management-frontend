@@ -17,6 +17,7 @@ import { GET_USER_AUTH } from "@/resolvers/auth";
 import { UserLayout } from "../user/layout";
 import UserOrders from "@/pages/user/orders";
 import UserOrder from "@/pages/user/order";
+import AdminDashboard from "@/pages/admin/dashboard";
 
 
 type User = {
@@ -51,7 +52,7 @@ export default function GlobalRoutes() {
                 <Route path="/Admin" element={<AdminLayout />}>
                     <Route element={<ProtectedRoute user={data?.user} requiredRoles={['ADMIN']} />}>
                         <Route path='Tables' element={<AdminTables />} />
-                        <Route path='Dashboard' element={<></>} />
+                        <Route path='Dashboard' element={<AdminDashboard/>} />
                         <Route path='Menu' element={<Foods />} />
                     </Route>
                 </Route>
