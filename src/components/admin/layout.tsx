@@ -18,16 +18,19 @@ const navItems = [
         icon: LayoutDashboard,
         label: "Dashboard",
         navTo: "/Admin/Dashboard",
+        selectedName:'Dashboard',
     },
     {
         icon: Sofa,
         label: "Tables",
-        navTo: "/Admin/Tables"
+        navTo: "/Admin/Tables",
+        seletedName: "Tables",
     },
     {
         icon: UtensilsCrossed,
         label: "Menu",
-        navTo: "/Admin/Menu"
+        navTo: "/Admin/Menu",
+        selectedName:'Menu',
     },
 
 ]
@@ -59,7 +62,7 @@ export const AdminLayout = React.memo(() => {
                                 <div className="space-y-1">
                                     {
                                         navItems.map(item => (
-                                            <NavItem icon={item.icon} label={item.label} collapsed={collapsed} pathName={location.pathname}  navTo={item.navTo} />
+                                            <NavItem icon={item.icon} label={item.label} collapsed={collapsed} pathName={location.pathname}  navTo={item.navTo} selectedName={item.navTo} />
                                         ))
                                     }
 
