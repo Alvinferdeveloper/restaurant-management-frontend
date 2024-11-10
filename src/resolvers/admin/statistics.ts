@@ -5,6 +5,7 @@ export const GET_STATISTICS = gql`
             totalSales
             servedClients
             foodSold
+            weekFoodSold
         weeklySales {
             day,
             total

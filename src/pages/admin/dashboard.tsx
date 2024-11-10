@@ -21,6 +21,7 @@ type OrderStatistics = {
     totalSales: number;
     servedClients: number;
     foodSold: number;
+    weekFoodSold: number;
     weeklySales: WeeklySales[];
     bestSellingFood: BestSellingFood[];
 
@@ -31,7 +32,7 @@ interface Data {
 }
 export default function AdminDashboard() {
   const { data } = useQuery<Data>(GET_STATISTICS);
-  const {  totalSales, servedClients, foodSold, weeklySales, bestSellingFood } = data?.orderStatistics || {};
+  const {  totalSales, servedClients, foodSold, weeklySales, bestSellingFood, weekFoodSold = 100} = data?.orderStatistics || {};
   return (
     <div className="flex-col md:flex bg-gray-900 text-white min-h-screen">
       <div className="border-b border-gray-800">
@@ -53,7 +54,7 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">${ totalSales }</div>
-                  <p className="text-xs text-gray-400">+18% respecto a ayer</p>
+                  <p className="text-xs text-gray-400">En el dia</p>
                 </CardContent>
               </Card>
              
@@ -64,7 +65,7 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{ servedClients }</div>
-                  <p className="text-xs text-gray-400">+12% respecto a ayer</p>
+                  <p className="text-xs text-gray-400">En el dia</p>
                 </CardContent>
               </Card>
               <Card className="bg-gray-800 border-gray-700 text-white">
@@ -74,7 +75,7 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{ foodSold}</div>
-                  <p className="text-xs text-gray-400">+8% respecto a ayer</p>
+                  <p className="text-xs text-gray-400">En el dia</p>
                 </CardContent>
               </Card>
             </div>
@@ -85,7 +86,7 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent className="pl-2">
                   <ResponsiveContainer width="100%" height={350}>
-                    <BarChart data={weeklySales}>
+                    <BarChart data={weeklySales?.map(sale => ({ ...sale, name: sale.day}))}>
                       <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
                       <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
                       <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} />
@@ -112,7 +113,7 @@ export default function AdminDashboard() {
                             {dish.totalSold} unidades vendidas
                           </p>
                         </div>
-                        <div className="ml-auto font-medium">{((dish.totalSold / 312) * 100).toFixed(1)}%</div>
+                        <div className="ml-auto font-medium">{((dish.totalSold / weekFoodSold) * 100).toFixed(1)}%</div>
                       </div>
                     ))}
                   </div>
