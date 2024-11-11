@@ -9,3 +9,15 @@ export const GET_USER_AUTH = gql`
 }
 
 `
+
+export const LOGIN = gql`
+ mutation LOGIN($email: String!, $password: String!) {
+ login(email: $email, password: $password) {
+  name
+  roles{
+    name
+  }
+ }
+}
+
+`;

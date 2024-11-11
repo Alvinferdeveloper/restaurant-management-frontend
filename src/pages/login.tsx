@@ -1,18 +1,9 @@
 import Spinner from "@/components/shared/spiner";
 import { GET_USER_AUTH } from "@/resolvers/auth";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {  useState } from "react";
-const LOGIN = gql`
- mutation LOGIN($email: String!, $password: String!) {
- login(email: $email, password: $password) {
-  name
-  roles{
-    name
-  }
- }
-}
+import { LOGIN } from "@/resolvers/auth";
 
-`;
 export default function Login() {
     const [login, { loading} ] = useMutation(LOGIN, { refetchQueries:[{ query: GET_USER_AUTH}]});
     const [ email, setEmail ] = useState('');
