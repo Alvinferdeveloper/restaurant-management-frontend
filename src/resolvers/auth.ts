@@ -21,3 +21,11 @@ export const LOGIN = gql`
 }
 
 `;
+
+export const REGISTER = gql`
+    mutation register($userInput: UserInput) {
+        userRegister (userInput: $userInput) {
+        name
+    }
+}
+`
