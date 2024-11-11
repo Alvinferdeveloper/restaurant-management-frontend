@@ -17,11 +17,8 @@ export default function Login() {
                 <form className="space-y-6" onSubmit={async (e)=> {
                     e.preventDefault();
                     const res = await login({ variables: { email, password}});
-                    console.log(res.data.login)
-                    if(res.data.login == null)setBadCredentials(true)
-                    const roles = res.data.login.roles.map((role:{ name: string}) => role.name);
-                    const redirectPath = roles.includes("ADMIN") ? '/Admin/Tables' : '/User/Tables';
-                        window.location.href = redirectPath;
+                    if(res.data.login == null)return setBadCredentials(true)
+                        window.location.href = '/';
                 }}>
                     <div>
                         <label htmlFor="email" className="text-sm font-medium text-gray-700 block mb-2">
