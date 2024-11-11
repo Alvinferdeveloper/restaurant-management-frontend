@@ -17,7 +17,7 @@ interface Data {
 }
 
 export default function UserOrders() {
-  const { data } = useQuery<Data>(GET_ORDERS);
+  const { data } = useQuery<Data>(GET_ORDERS, { fetchPolicy:'no-cache'});
   return (
     <div className="container mx-auto py-8">
       <Card>
